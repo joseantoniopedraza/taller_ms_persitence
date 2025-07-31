@@ -15,7 +15,7 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "pip install --user -r requirements.txt",
-  	"postCreateCommand": "python src/manage.py migrate"
+  	"postCreateCommand": "python taller_ms_persistence/manage.py migrate"
 
 	// Configure tool-specific properties.
 	// "customizations": {},
