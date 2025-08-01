@@ -15,6 +15,7 @@ def clients_list(request):
         interests_names = [ci.interest.name for ci in interests]
 
         clients_data.append({
+            'id': client.id,  # Agregando el ID del cliente
             'name': client.name,
             'email': client.email,
             'interests': interests_names
