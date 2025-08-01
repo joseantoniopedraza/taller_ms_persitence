@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-(ko08qaxe&)9^z+um)e!5a%*a41k7nq)o3d9nj3t&)dnuosp^t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -71,17 +71,19 @@ TEMPLATES = [
 WSGI_APPLICATION = "src.wsgi.application"
 
 
+import os
+
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'persistence_db',
-        'USER': 'persistence_user',
-        'PASSWORD': 'A123456',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME', 'persistence_db'),
+        'USER': os.getenv('DB_USER', 'persistence_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'A123456'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
