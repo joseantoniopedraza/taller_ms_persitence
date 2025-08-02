@@ -16,6 +16,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+RUN black .
+RUN ruff check . --fix
+RUN ruff format .
+
 # RUN chmod +x manage.py
 
 RUN echo '#!/bin/bash\n\
