@@ -1,0 +1,7 @@
+root@8e2163212393:/app# black .
+All done! ✨ 🍰 ✨
+26 files left unchanged.
+root@8e2163212393:/app# ruff check . --fix
+All checks passed!
+root@8e2163212393:/app# ruff format .
+26 files left unchanged
