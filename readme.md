@@ -1,6 +1,9 @@
 # 📘 Documentación de Taller MS Persitence
 
-Este proyecto incluye una API desarrollada con Django para gestionar:
+Encargado de la gestión y almacenamiento de usuarios, licitaciones y trazabilidad de procesos del sistema.
+
+
+Este proyecto incluye un MS desarrollado con Django para gestionar:
 
 - Clientes y sus intereses asociados.
 - Licitaciones (tenders).
@@ -15,7 +18,8 @@ Este proyecto incluye una API desarrollada con Django para gestionar:
 | Clientes   | POST   | `/clients/create/`     | Crear un cliente y asociar intereses              |
 | Clientes   | GET    | `/clients/interests/`  | Obtener listado de todos los intereses            |
 | Licitaciones | GET  | `/tenders/`       | Obtener listado de licitaciones                   |
-| Licitaciones | POST | `/tenders/create/`     | Crear una nueva licitación                        |
+
+> ⚠️ La creación de licitaciones se realiza mediante Redis, publicando un mensaje en el canal `messages`.
 
 
 ## 🧑‍💼 Clientes (`/clients/`)
@@ -116,13 +120,9 @@ Obtiene una lista de todas las licitaciones registradas.
 ]
 ```
 
-### POST /tenders/create/
+### Create Tenders
 
 Crea una nueva licitación.
-
-- **Método:** `POST`
-
-- **Content-Type:** `application/json`
 
 - **Cuerpo requerido:**
 
@@ -139,7 +139,9 @@ Crea una nueva licitación.
 
 2- El code debe ser único.
 
-- **Respuestas:** `201 Created: Licitación creada correctamente.`
+- **Respuestas:** 
+
+`201 Created: Licitación creada correctamente.`
 
 ```json
 {
