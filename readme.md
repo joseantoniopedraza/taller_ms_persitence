@@ -169,7 +169,8 @@ Incluye pruebas para:
 ## ⚙️ Requisitos del sistema
 - Python 3.11
 - Django 5.2.x
-- psycopg==3.2.X
+- psycopg 3.2.x
+- redis[hiredis] 6.2.x
 - PostgreSQL
 - Docker y Docker Compose (opcional para entorno de desarrollo)
 

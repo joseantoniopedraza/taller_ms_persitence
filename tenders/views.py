@@ -48,3 +48,11 @@ def create_tender(request):
             return JsonResponse({'error': str(e)}, status=500)
     
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+import RedisConnect
+
+def print_tender(*args):
+    print("Nuevo mensaje recibido:", args)
+
+redis_client = RedisConnect.RedisConnect(host='localhost', port=6379)
+redis_client.listen("messages", print_tender)
