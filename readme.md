@@ -8,7 +8,11 @@ Este proyecto incluye un MS desarrollado con Django para gestionar:
 - Clientes y sus intereses asociados.
 - Licitaciones (tenders).
 
----
+## Automatizaciones
+
+Esta plantilla posee automatizaciones en base al uso de archivos _Makefile_. 
+
+Estos archivo automatizan tareas comunes para el desarrollo y mantenimiento del proyecto. Cada comando puede ejecutarse con `make <comando>` desde la terminal.
 
 ## 📌 Tabla resumen de endpoints
 
@@ -174,5 +178,4 @@ Incluye pruebas para:
 - psycopg 3.2.x
 - redis[hiredis] 6.2.x
 - PostgreSQL
-- Docker y Docker Compose (opcional para entorno de desarrollo)
 
