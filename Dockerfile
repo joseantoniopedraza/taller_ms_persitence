@@ -20,6 +20,7 @@ COPY . .
 
 RUN echo '#!/bin/bash\n\
 echo "Running migrations..."\n\
+python manage.py makemigrations\n\
 python manage.py migrate\n\
 \n\
 echo "Starting Django server..."\n\
