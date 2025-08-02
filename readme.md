@@ -1,68 +1,175 @@
-# Taller MS Persistence
+# 📘 Documentación de Taller MS Persitence
 
-Microservicio Django para persistencia de datos de licitaciones.
+Este proyecto incluye una API desarrollada con Django para gestionar:
 
-## Docker
+- Clientes y sus intereses asociados.
+- Licitaciones (tenders).
 
-### Construir la imagen
+---
 
-```bash
-docker build -t taller_ms_persistence .
+## 📌 Tabla resumen de endpoints
+
+| Recurso    | Método | Endpoint               | Descripción                                       |
+|------------|--------|------------------------|---------------------------------------------------|
+| Clientes   | GET    | `/clients/`       | Obtener listado de clientes con sus intereses     |
+| Clientes   | POST   | `/clients/create/`     | Crear un cliente y asociar intereses              |
+| Clientes   | GET    | `/clients/interests/`  | Obtener listado de todos los intereses            |
+| Licitaciones | GET  | `/tenders/`       | Obtener listado de licitaciones                   |
+| Licitaciones | POST | `/tenders/create/`     | Crear una nueva licitación                        |
+
+
+## 🧑‍💼 Clientes (`/clients/`)
+
+### `GET /clients/`
+
+Obtiene una lista de todos los clientes registrados junto con sus intereses.
+
+- **Método:** `GET`
+- **Respuesta exitosa:** `200 OK`
+
+#### Ejemplo de respuesta:
+
+```json
+[
+  {
+    "name": "Juan Pérez",
+    "email": "juan@example.com",
+    "interests": ["Python", "Django"]
+  }
+]
 ```
 
-### Ejecutar el contenedor
+### `POST /clients/create/`
 
-```bash
-docker run --rm -p 8000:8000 \
-  -e DB_HOST=postgres \
-  -e DB_PORT=5432 \
-  -e DB_NAME=persistence_db \
-  -e DB_USER=persistence_user \
-  -e DB_PASSWORD=A123456 \
-  taller_ms_persistence
+Crea un nuevo cliente junto con sus intereses.
+
+- **Método:** `POST`
+- **Content-Type:** `application/json`
+
+Cuerpo requerido:
+
+```json
+{
+  "name": "Ana Torres",
+  "email": "ana@example.com",
+  "interests": ["IA", "Ciencia de Datos"]
+}
 ```
 
-### Usar con Docker Compose
+- Validaciones:
 
-El servicio ya está configurado en el `docker-compose.yml` principal. Para ejecutarlo:
+1- Todos los campos son obligatorios.
 
-```bash
-# Ejecutar solo el servicio de persistencia
-docker-compose up taller_ms_persistence
+2- Los intereses serán creados si no existen.
 
-# Ejecutar todo el stack
-docker-compose up
+- **Respuestas:** `201 Created: Cliente creado correctamente.`
+
+```json
+
+{
+  "message": "Cliente creado correctamente",
+  "client_id": 5
+}
+```
+`400 Bad Request: Faltan campos obligatorios o formato inválido.`
+
+`500 Internal Server Error: Otro error inesperado.`
+
+### `GET /clients/interests/`
+Obtiene la lista completa de intereses existentes en el sistema.
+
+- **Método:** `GET`
+
+- **Respuesta exitosa:** `200 OK`
+
+Ejemplo de respuesta:
+```json
+[
+  {
+    "id": 1,
+    "name": "Construcción"
+  },
+  {
+    "id": 2,
+    "name": "Tecnología"
+  }
+]
 ```
 
-## Variables de entorno
+## 📦 Licitaciones (/tenders/)
+### GET /tenders/
+Obtiene una lista de todas las licitaciones registradas.
 
-- `DB_NAME`: Nombre de la base de datos (por defecto: persistence_db)
-- `DB_USER`: Usuario de la base de datos (por defecto: persistence_user)
-- `DB_PASSWORD`: Contraseña de la base de datos (por defecto: A123456)
-- `DB_HOST`: Host de la base de datos (por defecto: localhost)
-- `DB_PORT`: Puerto de la base de datos (por defecto: 5432)
+-**Método:** `GET`
 
-## Dependencias
+-** Respuesta exitosa:** `200 OK`
 
+#### Ejemplo de respuesta:
+```json
+[
+  {
+    "id": 1,
+    "code": "LIC001",
+    "title": "Compra de equipos",
+    "description": "Licitación para la adquisición de equipos computacionales"
+  }
+]
+```
+
+### POST /tenders/create/
+
+Crea una nueva licitación.
+
+- **Método:** `POST`
+
+- **Content-Type:** `application/json`
+
+- **Cuerpo requerido:**
+
+```json
+{
+  "code": "LIC123",
+  "title": "Servicio de Mantenimiento",
+  "description": "Contratación de servicios de mantenimiento preventivo"
+}
+```
+-  **Validaciones:** 
+
+1- Todos los campos son obligatorios.
+
+2- El code debe ser único.
+
+- **Respuestas:** `201 Created: Licitación creada correctamente.`
+
+```json
+{
+  "message": "Licitación creada correctamente",
+  "tender_id": 10
+}
+```
+`400 Bad Request:` Faltan campos obligatorios o formato JSON inválido.
+
+`409 Conflict:` Ya existe una licitación con el mismo código.
+
+`500 Internal Server Error:` Otro error inesperado.
+
+## 🧪 Pruebas unitarias
+Puedes ejecutar las pruebas unitarias con el siguiente comando:
+
+`python manage.py test`
+
+Incluye pruebas para:
+
+- Creación y validación de clientes con intereses.
+- Manejo de campos requeridos y errores en /clients/create/.
+- Creación y validación de licitaciones.
+- Prevención de duplicados en códigos de licitación.
+- Manejo de JSON inválido y métodos no permitidos.
+
+## ⚙️ Requisitos del sistema
 - Python 3.11
-- Django 5.2.4
-- psycopg 3.2.9 (PostgreSQL adapter)
-- PostgreSQL 15
+- Django 5.2.x
+- psycopg==3.2.X
+- PostgreSQL
+- Docker y Docker Compose (opcional para entorno de desarrollo)
 
-## Acceso
-
-- **Django Admin**: http://localhost:8000/admin/
-- **API**: http://localhost:8000/
-
-## Comandos útiles
-
-```bash
-# Crear superusuario
-docker-compose exec taller_ms_persistence python manage.py createsuperuser
-
-# Ejecutar migraciones manualmente
-docker-compose exec taller_ms_persistence python manage.py migrate
-
-# Crear migraciones
-docker-compose exec taller_ms_persistence python manage.py makemigrations
-```
