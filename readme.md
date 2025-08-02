@@ -15,10 +15,10 @@ docker build -t taller_ms_persistence .
 ```bash
 docker run --rm -p 8000:8000 \
   -e DB_HOST=postgres \
-  -e DB_PORT=5432 \
-  -e DB_NAME=persistence_db \
-  -e DB_USER=persistence_user \
-  -e DB_PASSWORD=A123456 \
+  -e DB_PORT=*** \
+  -e DB_NAME=*** \
+  -e DB_USER=*** \
+  -e DB_PASSWORD=*** \
   taller_ms_persistence
 ```
 

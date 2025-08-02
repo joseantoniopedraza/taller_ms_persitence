@@ -25,7 +25,12 @@ SECRET_KEY = "django-insecure-(ko08qaxe&)9^z+um)e!5a%*a41k7nq)o3d9nj3t&)dnuosp^t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# En modo debug, aceptar cualquier host
 ALLOWED_HOSTS = ['*']
+
+# Deshabilitar validación de hosts para desarrollo
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Application definition
@@ -33,6 +38,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     "clients.apps.ClientsConfig",
     "tenders.apps.TendersConfig",
+    "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -42,6 +48,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -128,3 +135,38 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# CORS Configuration
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+# For development, you can also allow all origins (less secure)
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+# Additional CORS settings for better compatibility
+CORS_PREFLIGHT_MAX_AGE = 86400
