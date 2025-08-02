@@ -7,21 +7,30 @@ from django.views.decorators.csrf import csrf_exempt
 def index(request):
     return HttpResponse("Hello, world. You're at the client index.")
 
+@csrf_exempt
 def clients_list(request):
-    clients_data = []
+    if request.method == 'GET':
+        clients_data = []
 
-    for client in Clients.objects.all():
-        interests = client.clients_interests_set.all().select_related('interest')
-        interests_names = [ci.interest.name for ci in interests]
+        for client in Clients.objects.all():
+            interests = client.clients_interests_set.all().select_related('interest')
+            interests_names = [ci.interest.name for ci in interests]
 
-        clients_data.append({
-            'id': client.id,  # Agregando el ID del cliente
-            'name': client.name,
-            'email': client.email,
-            'interests': interests_names
-        })
+            clients_data.append({
+                'id': client.id,  # Agregando el ID del cliente
+                'name': client.name,
+                'email': client.email,
+                'interests': interests_names
+            })
 
-    return JsonResponse(clients_data, safe=False)
+        return JsonResponse(clients_data, safe=False)
+    
+    elif request.method == 'POST':
+        # Redirigir POST requests a la función de creación
+        return create_client_with_interests(request)
+    
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 
 def interests_list(request):
